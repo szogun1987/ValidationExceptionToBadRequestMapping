@@ -1,0 +1,41 @@
+# ASP.NET Core
+# Build and test ASP.NET Core projects targeting .NET Core.
+# Add steps that run tests, create a NuGet package, deploy, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/languages/dotnet-core
+
+trigger:
+- master
+
+pool:
+  vmImage: 'Ubuntu-16.04'
+
+variables:
+  buildConfiguration: 'Release'
+
+steps:
+- checkout: self
+  persistCredentials: true
+  clean: true
+
+- script: |
+    chmod +x ./bump-version.sh
+    export VERSION=$(cat version | ./bump-version.sh)
+    echo $VERSION > version
+    git config --global user.email "azure-pipeline@szogun-ui.pl"
+    git config --global user.name "Azure pipeline"
+    git add version
+    git commit -m "[skip ci]"
+    git push
+    git tag releases/$VERSION
+    git push origin releases/$VERSION
+  displayName: 'Bump version'
+  
+- script: |
+    export VERSION=$(cat version)
+    cd src
+    dotnet build --configuration $(buildConfiguration) -p:Version=$VERSION-alpha -p:AssemblyVersion=$VERSION.0 -p:FileVersion=$VERSION.0
+    cd FluentValidation.ValidationExceptionToBadRequestMapping/bin/$(buildConfiguration)
+    dotnet nuget push FluentValidation.ValidationExceptionToBadRequestMapping.$VERSION-alpha.nupkg -k $NUGET_API_KEY -s https://api.nuget.org/v3/index.json
+  env:
+    NUGET_API_KEY: $(nuget.apiKey)
+  displayName: 'dotnet build and publish $(buildConfiguration)'
