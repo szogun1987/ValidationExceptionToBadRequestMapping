@@ -6,7 +6,7 @@ Just call `UseValidationExceptionToBadRequestMapping` in your the Configure meth
 public void Configure(IApplicationBuilder app, IHostingEnvironment env)
 {
     ...
-    app.UseMiddleware<ValidationExceptionToBadRequestMappingMiddleware>();
+    app.UseValidationExceptionToBadRequestMapping();
     app.UseMvc();
 }
 ```
