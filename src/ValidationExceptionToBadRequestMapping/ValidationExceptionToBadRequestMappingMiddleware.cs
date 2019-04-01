@@ -1,6 +1,7 @@
 ﻿using System.IO;
 using System.Net;
 using System.Threading.Tasks;
+using FluentValidation;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 
