@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Builder;
 
-namespace FluentValidation.ValidationExceptionToBadRequestMapping
+namespace ValidationExceptionToBadRequestMapping
 {
     public static class ApplicationBuilderExtensions
     {

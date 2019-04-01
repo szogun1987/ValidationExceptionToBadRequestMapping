@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28307.421
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FluentValidation.ValidationExceptionToBadRequestMapping", "FluentValidation.ValidationExceptionToBadRequestMapping\FluentValidation.ValidationExceptionToBadRequestMapping.csproj", "{E54522BA-9B0C-4F04-8620-1302BB9763F3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ValidationExceptionToBadRequestMapping", "ValidationExceptionToBadRequestMapping\ValidationExceptionToBadRequestMapping.csproj", "{E54522BA-9B0C-4F04-8620-1302BB9763F3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
