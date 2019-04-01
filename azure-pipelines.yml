@@ -34,8 +34,8 @@ steps:
     export VERSION=$(cat version)
     cd src
     dotnet build --configuration $(buildConfiguration) -p:Version=$VERSION-alpha -p:AssemblyVersion=$VERSION.0 -p:FileVersion=$VERSION.0
-    cd FluentValidation.ValidationExceptionToBadRequestMapping/bin/$(buildConfiguration)
-    dotnet nuget push FluentValidation.ValidationExceptionToBadRequestMapping.$VERSION-alpha.nupkg -k $NUGET_API_KEY -s https://api.nuget.org/v3/index.json
+    cd ValidationExceptionToBadRequestMapping/bin/$(buildConfiguration)
+    dotnet nuget push ValidationExceptionToBadRequestMapping.$VERSION-alpha.nupkg -k $NUGET_API_KEY -s https://api.nuget.org/v3/index.json
   env:
     NUGET_API_KEY: $(nuget.apiKey)
   displayName: 'dotnet build and publish $(buildConfiguration)'
