@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using FluentValidation;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 
 namespace ValidationExceptionToBadRequestMapping
 {
@@ -24,7 +25,7 @@ namespace ValidationExceptionToBadRequestMapping
             }
             catch (ValidationException e)
             {
-                var jsonSerializer = JsonSerializer.CreateDefault();
+                var jsonSerializer = JsonSerializer.CreateDefault(new JsonSerializerSettings{ContractResolver = new CamelCasePropertyNamesContractResolver()});
                 using (var streamWriter = new StreamWriter(httpContext.Response.Body))
                 {
                     httpContext.Response.StatusCode = (int) HttpStatusCode.BadRequest;

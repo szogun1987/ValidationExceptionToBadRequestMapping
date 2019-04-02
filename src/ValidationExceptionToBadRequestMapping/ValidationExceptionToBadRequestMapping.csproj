@@ -15,7 +15,7 @@
     <Company>Szogun Usługi Informatyczne</Company>
     <Authors>Wojciech Gomoła</Authors>
     <Company>Szogun Usługi Informatyczne</Company>
-    <PackageId>FluentValidation.ValidationExceptionToBadRequestMapping</PackageId>
+    <PackageId>ValidationExceptionToBadRequestMapping</PackageId>
     <Product>FluentValidation ValidationException to BadRequest mapping</Product>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
