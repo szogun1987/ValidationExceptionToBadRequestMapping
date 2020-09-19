@@ -11,10 +11,12 @@ namespace ValidationExceptionToBadRequestMapping
     internal class ValidationExceptionToBadRequestMappingMiddleware
     {
         private readonly RequestDelegate _next;
+        private HttpStatusCode _failureCode;
 
-        public ValidationExceptionToBadRequestMappingMiddleware(RequestDelegate next)
+        public ValidationExceptionToBadRequestMappingMiddleware(RequestDelegate next, HttpStatusCode failureCode)
         {
             _next = next;
+            _failureCode = failureCode;
         }
 
         public async Task InvokeAsync(HttpContext httpContext)
@@ -28,7 +30,7 @@ namespace ValidationExceptionToBadRequestMapping
                 var jsonSerializer = JsonSerializer.CreateDefault(new JsonSerializerSettings{ContractResolver = new CamelCasePropertyNamesContractResolver()});
                 using (var streamWriter = new StreamWriter(httpContext.Response.Body))
                 {
-                    httpContext.Response.StatusCode = (int) HttpStatusCode.BadRequest;
+                    httpContext.Response.StatusCode = (int) _failureCode;
                     var jsonWriter = new JsonTextWriter(streamWriter);
 
                     jsonWriter.CloseOutput = false;
