@@ -1,17 +1,17 @@
 ﻿using System.IO;
 using System.Net;
+using System.Text.Json;
 using System.Threading.Tasks;
 using FluentValidation;
 using Microsoft.AspNetCore.Http;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
+
 
 namespace ValidationExceptionToBadRequestMapping
 {
     internal class ValidationExceptionToBadRequestMappingMiddleware
     {
         private readonly RequestDelegate _next;
-        private HttpStatusCode _failureCode;
+        private readonly HttpStatusCode _failureCode;
 
         public ValidationExceptionToBadRequestMappingMiddleware(RequestDelegate next, HttpStatusCode failureCode)
         {
@@ -27,17 +27,14 @@ namespace ValidationExceptionToBadRequestMapping
             }
             catch (ValidationException e)
             {
-                var jsonSerializer = JsonSerializer.CreateDefault(new JsonSerializerSettings{ContractResolver = new CamelCasePropertyNamesContractResolver()});
-                using (var streamWriter = new StreamWriter(httpContext.Response.Body))
-                {
-                    httpContext.Response.StatusCode = (int) _failureCode;
-                    var jsonWriter = new JsonTextWriter(streamWriter);
+                
+                await using var streamWriter = new StreamWriter(httpContext.Response.Body);
 
-                    jsonWriter.CloseOutput = false;
-                    jsonSerializer.Serialize(jsonWriter, e.Errors);
+                httpContext.Response.StatusCode = (int) _failureCode;
+                
+                await JsonSerializer.SerializeAsync(httpContext.Response.Body, e.Errors).ConfigureAwait(false);
 
-                    await streamWriter.FlushAsync();
-                }
+                await streamWriter.FlushAsync().ConfigureAwait(false);
             }
         }
     }
