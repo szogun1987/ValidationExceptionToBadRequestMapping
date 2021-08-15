@@ -31,8 +31,13 @@ namespace ValidationExceptionToBadRequestMapping
                 await using var streamWriter = new StreamWriter(httpContext.Response.Body);
 
                 httpContext.Response.StatusCode = (int) _failureCode;
-                
-                await JsonSerializer.SerializeAsync(httpContext.Response.Body, e.Errors).ConfigureAwait(false);
+
+                var options = new JsonSerializerOptions
+                {
+                    PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+                };
+
+                await JsonSerializer.SerializeAsync(httpContext.Response.Body, e.Errors, options).ConfigureAwait(false);
 
                 await streamWriter.FlushAsync().ConfigureAwait(false);
             }
